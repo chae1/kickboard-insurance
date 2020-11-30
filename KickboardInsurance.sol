@@ -461,8 +461,8 @@ contract KickboardInsurance is ERC20 {
     /**
      * Constructor.
      */
-    constructor() public ERC20("Kickboard", "KICK") {
-        _mint(msg.sender, 10**decimals() * 1);
+    constructor() public ERC20("SafeQuick", "SFQ") {
+        _mint(msg.sender, 10**decimals() * 100);
         
         _funds_ETH = 10**decimals() * 0;
         _fundsUpperLimit_ETH = 10**decimals() * 10; /* 10 ETH */

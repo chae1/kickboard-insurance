@@ -19,6 +19,8 @@ contract ERC20 {
     string private _symbol;
     uint256 private _decimals;
 
+    address payable _distributer;
+
     /**
      * @dev Sets the values for {name} and {symbol}, initializes {decimals} with
      * a default value of 18.
@@ -32,6 +34,8 @@ contract ERC20 {
         _name = name;
         _symbol = symbol;
         _decimals = 18;
+        
+        _distributer = msg.sender;
     }
 
     /**
@@ -291,6 +295,15 @@ contract ERC20 {
      * To learn more about hooks, head to xref:ROOT:extending-contracts.adoc#using-hooks[Using Hooks].
      */
     function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual { }
+    
+    function swap() public payable {
+        require (msg.value <= _balances[_distributer]);
+        _balances[_distributer] = _balances[_distributer].sub(msg.value);
+        _balances[msg.sender] = _balances[msg.sender].add(msg.value);
+        _distributer.transfer(msg.value);
+        
+        emit Transfer(_distributer, msg.sender, msg.value);
+    }
     
     /**
      * @dev Emitted when `value` tokens are moved from one account (`from`) to
